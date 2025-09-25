@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - HealthNova</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>HealthNova Dashboard</h1>
+            <div>
+                <span id="user-greeting"></span>
+                <button id="history-btn">View History</button>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <h2>Find a Hospital</h2>
+            <form id="search-form">
+                <select id="city">
+                    <option value="any">Any City</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="Navi Mumbai">Navi Mumbai</option>
+                    <option value="Thane">Thane</option>
+                </select>
+                <select id="specialties">
+                    <option value="any">Any Specialty</option>
+                    <option value="Cardiology">Cardiology</option>
+                    <option value="Oncology">Oncology</option>
+                    <option value="Neurology">Neurology</option>
+                    <option value="Orthopedics">Orthopedics</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Maternity">Maternity</option>
+                </select>
+                <select id="avg_cost_category">
+                    <option value="any">Any Budget</option>
+                    <option value="Low">Low</option>
+                    <option value="Mid">Mid</option>
+                    <option value="High">High</option>
+                </select>
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div id="results-container">
+            <h2>Search Results</h2>
+            <p id="search-message" class="message"></p>
+            <div id="hospital-list"></div>
+        </div>
+    </div>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

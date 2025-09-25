@@ -1,0 +1,81 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+.container {
+    max-width: 900px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+h1, h2 {
+    color: #0056b3;
+    text-align: center;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+input, select, button {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+button:hover {
+    background-color: #0056b3;
+}
+#logout-btn, #history-btn, #back-to-dashboard {
+    width: auto;
+    padding: 8px 15px;
+    margin-left: 10px;
+}
+.form-container, .search-container {
+    margin-bottom: 30px;
+}
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+.message {
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.hospital-card, .booking-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.hospital-card h3, .booking-card h3 {
+    margin-top: 0;
+    color: #333;
+}
+.hospital-card p, .booking-card p {
+    margin: 5px 0;
+}
+.hospital-card .book-btn {
+    width: auto;
+    padding: 8px 15px;
+    float: right;
+}
