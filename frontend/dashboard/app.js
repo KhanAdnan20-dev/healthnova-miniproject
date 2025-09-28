@@ -32,6 +32,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+
+
+  const logoutBtn = document.getElementById('logout-btn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    // Clear all user-related localStorage items
+    localStorage.removeItem('healthnova_token');
+    localStorage.removeItem('healthnova_user');
+    localStorage.removeItem('healthnova_user_name');
+    // Optionally clear other session info here
+
+    // Redirect to login page
+    window.location.href = '../login/login.html';
+  });
+}
+
+
+
+
+
   // --- DASHBOARD / SEARCH / HISTORY / BOOKING LOGIC ---
   const token = localStorage.getItem('healthnova_token');
   if (!token) {
@@ -53,37 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const storedUserName = localStorage.getItem('healthnova_user_name');
   if (userGreetingSpan) userGreetingSpan.textContent = `Hello, ${storedUserName || 'User'}!`;
 
-  // --- Helpers: local history storage ---
-  const HISTORY_KEY = 'healthnova_history';
-  const MAX_HISTORY_ITEMS = 200;
-
-  const loadHistoryFromLocal = () => {
-    try {
-      const raw = localStorage.getItem(HISTORY_KEY);
-      if (!raw) return [];
-      const arr = JSON.parse(raw);
-      return Array.isArray(arr) ? arr : [];
-    } catch (e) {
-      console.warn('Failed to parse history from localStorage', e);
-      return [];
-    }
-  };
-
-  const saveHistoryToLocal = (arr) => {
-    try {
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(arr.slice(0, MAX_HISTORY_ITEMS)));
-    } catch (e) {
-      console.error('Failed to save history to localStorage', e);
-    }
-  };
-
-  const addBookingToHistory = (hospital) => {
-    const hist = loadHistoryFromLocal();
-    hist.unshift(hospital); // newest first
-    saveHistoryToLocal(hist);
-  };
-
   // --- Card HTML (adds Book button when not rendering history) ---
+  // IMPORTANT: Add hospital.id to data attributes for booking!
   const escapeHtml = (str = '') => String(str)
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -102,8 +93,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const description = escapeHtml(hospital.description || 'A leading hospital providing excellent care.');
     const bookingInfo = options.bookingDate ? `<p><strong>Booked on:</strong> ${escapeHtml(options.bookingDate)}</p>` : '';
 
-    // Data attributes on Book button to reconstruct hospital object on click
-    const dataAttrs = `data-name="${name}" data-city="${city}" data-specialties="${specialties}" data-cost="${cost}" data-description="${description}" data-rating="${rating}"`;
+    // Hospital ID is needed for backend booking!
+    const dataAttrs = hospital.id ? 
+      `data-id="${hospital.id}" data-name="${name}" data-city="${city}" data-specialties="${specialties}" data-cost="${cost}" data-description="${description}" data-rating="${rating}"` :
+      `data-name="${name}" data-city="${city}" data-specialties="${specialties}" data-cost="${cost}" data-description="${description}" data-rating="${rating}"`;
 
     return `
       <div class="hospital-card">
@@ -138,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     hospitalListContainer.innerHTML = hospitals.map(h => createHospitalCardHTML(h, { isHistory: false })).join('');
   };
 
+  // --- Updated history renderer for backend response ---
   const renderHistoryList = (historyArr) => {
     if (!historyList) return;
     historyList.innerHTML = '';
@@ -146,7 +140,11 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     historyList.innerHTML = historyArr.map(item => {
-      return createHospitalCardHTML(item, { isHistory: true, bookingDate: item.bookingDate });
+      return createHospitalCardHTML({
+        name: item.hospitalName,
+        specialties: item.specialties,
+        bookingDate: item.date
+      }, { isHistory: true, bookingDate: item.date });
     }).join('');
   };
 
@@ -155,56 +153,85 @@ document.addEventListener('DOMContentLoaded', () => {
     hospitalListContainer.addEventListener('click', (e) => {
       const btn = e.target.closest('.btn-book');
       if (!btn) return;
-      // Reconstruct hospital object from data- attributes
-      const hospital = {
-        name: btn.getAttribute('data-name') || 'Unnamed Hospital',
-        city: btn.getAttribute('data-city') || '',
-        specialties: btn.getAttribute('data-specialties') || 'General',
-        avg_cost_category: btn.getAttribute('data-cost') || 'N/A',
-        description: btn.getAttribute('data-description') || '',
-        rating: btn.getAttribute('data-rating') || 'N/A',
-        bookingDate: new Date().toLocaleString()
-      };
 
-      // Save to local history
-      addBookingToHistory(hospital);
-
-      // Provide immediate feedback to the user
-      btn.textContent = 'Booked ✓';
-      btn.disabled = true;
-
-      // If history panel visible, refresh it
-      if (historySection && historySection.style.display !== 'none') {
-        const hist = loadHistoryFromLocal();
-        renderHistoryList(hist);
+      // Get hospitalId from data attribute
+      const hospitalId = btn.getAttribute('data-id');
+      if (!hospitalId) {
+        alert('Hospital ID missing. Cannot book.');
+        return;
       }
+      const token = localStorage.getItem('healthnova_token');
 
-      // Small unobtrusive toast (temporary DOM)
-      const toast = document.createElement('div');
-      toast.className = 'booking-toast';
-      toast.textContent = `Booked ${hospital.name}`;
-      Object.assign(toast.style, {
-        position: 'fixed',
-        right: '1rem',
-        bottom: '1rem',
-        background: '#222',
-        color: '#fff',
-        padding: '0.6rem 0.9rem',
-        borderRadius: '6px',
-        zIndex: 9999,
-        opacity: 0.95
+      // POST booking to backend
+      fetch('http://localhost:5500/api/hospitals/book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ hospitalId: hospitalId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        btn.textContent = 'Booked ✓';
+        btn.disabled = true;
+
+        // Refresh history panel from backend if open
+        if (historySection && historySection.style.display !== 'none') {
+          const user = JSON.parse(localStorage.getItem('healthnova_user'));
+          fetch(`http://localhost:5500/api/hospitals/history/${user.id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+            .then(res => res.json())
+            .then(data => {
+              renderHistoryList(data.bookings);
+            })
+            .catch(() => {
+              historyList.innerHTML = '<p class="message">Failed to load booking history.</p>';
+            });
+        }
+
+        // Toast
+        const toast = document.createElement('div');
+        toast.className = 'booking-toast';
+        toast.textContent = `Booked ${btn.getAttribute('data-name')}`;
+        Object.assign(toast.style, {
+          position: 'fixed',
+          right: '1rem',
+          bottom: '1rem',
+          background: '#222',
+          color: '#fff',
+          padding: '0.6rem 0.9rem',
+          borderRadius: '6px',
+          zIndex: 9999,
+          opacity: 0.95
+        });
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      })
+      .catch(() => {
+        alert('Booking failed. Please try again.');
       });
-      document.body.appendChild(toast);
-      setTimeout(() => toast.remove(), 2500);
     });
   }
 
-  // --- History panel show/hide wiring ---
+  // --- History panel show/hide wiring (fetch from backend) ---
   if (viewHistoryBtn && historySection && closeHistoryBtn) {
-    viewHistoryBtn.addEventListener('click', (e) => {
+    viewHistoryBtn.addEventListener('click', async (e) => {
       e.preventDefault();
-      const hist = loadHistoryFromLocal();
-      renderHistoryList(hist);
+      const token = localStorage.getItem('healthnova_token');
+      const user = JSON.parse(localStorage.getItem('healthnova_user'));
+      if (!token || !user) return alert('Please log in again.');
+      try {
+        const res = await fetch(`http://localhost:5500/api/hospitals/history/${user.id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        renderHistoryList(data.bookings); // Use backend response
+      } catch (err) {
+        console.error('Failed to fetch history', err);
+        historyList.innerHTML = '<p class="message">Failed to load booking history.</p>';
+      }
       historySection.style.display = 'block';
       historySection.scrollIntoView({ behavior: 'smooth' });
     });
@@ -258,3 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchMessage.style.display = 'block';
   }
 }); // end DOMContentLoaded
+
+// logout button handler
+
+// verify if above logout handler is correctly placed
