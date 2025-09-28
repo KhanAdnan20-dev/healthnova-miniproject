@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="../assets/logo.png" alt="Health Nova Logo">
+                <span>Health Nova</span>
+            </div>
+            <nav class="nav-options">
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="../login/login.html">Login</a></li>
+                    <li><a href="../registration/registration.html" class="btn-register">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="slider-main">
+        <img src="https://picsum.photos/id/236/1000/500" class="slide" alt="">
+        <img src="image1.png" class="slide" alt="">
+        <img src="https://picsum.photos/id/240/1000/500" class="slide" alt="">
+        <img src="https://picsum.photos/id/238/1000/500" class="slide" alt="">
+        <img src="https://picsum.photos/id/236/1000/500" class="slide clone" alt="">
+        <img src="image1.png" class="slide clone" alt="">
+    </main>
+
+    <!-- dashboard section -->
+    <section id="dashboard-section" class="page-section">
+        <div class="container">
+            <header class="dashboard-header">
+                <h1 class="dashboard-title">Patient Dashboard</h1>
+                <div class="user-actions">
+                    <span id="user-greeting" class="greeting-text">Hello, User!</span>
+                    <!-- Added ID to the button for JS selection -->
+                    <button id="view-history-btn" class="btn-dash">View History</button>
+                </div>
+            </header>
+
+            <div class="search-form-card">
+                <h2>Find a Hospital or Specialist</h2>
+                <form id="search-form" class="hospital-search-form">
+                    <select id="city" class="search-select">
+                        <option value="any">Any City</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Navi Mumbai">Navi Mumbai</option>
+                        <option value="Thane">Thane</option>
+                    </select>
+                    <select id="specialties" class="search-select">
+                        <option value="any">Any Specialty</option>
+                        <option value="Cardiology">Cardiology</option>
+                        <option value="Oncology">Oncology</option>
+                        <option value="Neurology">Neurology</option>
+                        <option value="Orthopedics">Orthopedics</option>
+                        <option value="Pediatrics">Pediatrics</option>
+                        <option value="Maternity">Maternity</option>
+                    </select>
+                    <select id="avg_cost_category" class="search-select">
+                        <option value="any">Any Budget</option>
+                        <option value="Low">Low</option>
+                        <option value="Mid">Mid</option>
+                        <option value="High">High</option>
+                    </select>
+                    <button type="submit" class="btn-dash">Search</button>
+                </form>
+            </div>
+
+            <div id="results-container" class="results-section">
+                <h2 class="results-title">Search Results</h2>
+                <p id="search-message" class="message"></p>
+                <div id="hospital-list" class="hospital-list-grid"></div>
+            </div>
+
+            <!-- Newly added booking history section (hidden by default) -->
+            <section id="history-section" class="page-section" style="display: none;">
+                <div class="container">
+                    <h2 class="results-title">Booking History</h2>
+                    <div id="history-list" class="hospital-list-grid"></div>
+                    <button id="close-history" class="btn-dash">Close History</button>
+                </div>
+            </section>
+        </div>           
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2024 Health Nova. All rights reserved.</p>
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

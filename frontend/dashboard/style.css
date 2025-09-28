@@ -1,0 +1,333 @@
+/* Basic Reset & Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e0f2f7, #c8e6c9); /* Soft gradient background */
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.5em;
+    color: #25aaa4; 
+}
+
+.nav-logo img {
+    height: 40px; 
+    margin-right: 10px;
+}
+
+.navbar nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar nav ul li {
+    margin-left: 30px;
+}
+
+.nav-options ul li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-options ul li a:hover {
+    color: #007bff; 
+}
+.btn-register {
+    background-color: #28a745;
+    color: #fff !important;
+    padding: 8px 15px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+.btn-register:hover {
+    background-color: #218838;
+}
+
+main {
+    width: 100%;
+    /* max-width: 800px;  Set a max width for better viewing */
+    height: 600px;
+    position: relative;
+    overflow: hidden;
+    cursor: grab; /* Indicates the element can be dragged */
+    touch-action: pan-y; /* Allows vertical scrolling but handles horizontal for slider */
+}        
+main:active {
+    cursor: grabbing;
+}
+.slide {
+    width: 100%;
+    height: 100%;
+    /* transition will be dynamically applied/removed by JS */
+    position: absolute;
+    top: 0;
+    left: 0;
+    user-select: none; /* Prevent text selection while dragging */
+    -webkit-user-drag: none; /* For Safari */
+    -moz-user-select: none; /* For Firefox */
+    -ms-user-select: none; /* For Internet Explorer/Edge */
+}
+
+
+/* --- Dashboard & General Page Container --- */
+
+#dashboard-section {
+    /*background-color: #f4f7f9;*/  /*Light, calming background */
+     background-color: white; 
+}
+
+/* --- Dashboard Header --- */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 30px 0px;
+}
+
+.dashboard-title {
+    font-size: 2em;
+    font-weight: 700;
+    color: #007bff;
+}
+
+.user-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.greeting-text {
+    font-size: 1.1em;
+    font-weight: 500;
+    color: #333;
+}
+
+.btn-dash {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-dash:hover {
+    background-color: #0056b3;
+}
+
+/* --- Search Card and Form --- */
+
+.search-form-card {
+    background-color: white;
+    padding: 30px;
+}
+
+.search-form-card h2 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.hospital-search-form {
+    display: flex;
+    gap: 15px;
+    align-items: stretch;
+}
+
+.search-select {
+    flex-grow: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    background-color: #fff;
+    appearance: none; /* Removes default dropdown arrow */
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%20viewBox%3D%220%200%20292.4%20292.4%22%3E%3Cpath%20fill%3D%22%23333333%22%20d%3D%22M287%20146.2c0%202.3-1%204.6-2.6%206.2L151.7%20287c-3.4%203.4-8.8%203.4-12.2%200l-133-134.6c-3.4-3.4-3.4-8.8%200-12.2l12.2-12.2c3.4-3.4%208.8-3.4%2012.2%200l126.9%20128.6%20126.9-128.6c3.4-3.4%208.8-3.4%2012.2%200l12.2%2012.2c1.6%201.6%202.6%203.9%202.6%206.2z%22%2F%3E%3C%2Fsvg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 12px;
+}
+
+/* --- Results Section --- */
+
+.results-section {
+    padding: 10px 0;
+}
+
+.results-title {
+    font-size: 1.8em;
+    color: #333;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+    margin: 0px 20px 20px;
+    visibility: hidden;
+}
+
+.message {
+    font-style: italic;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.hospital-list-grid {
+    margin: 20px;
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+
+/* Placeholder for individual hospital cards */
+.hospital-card {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden; 
+    transition: transform 0.2s ease;
+    /* display: none; */
+    /* visibility: hidden; */
+}
+
+/* ------------------ New Image & Info Styles ------------------ */
+
+.hospital-image {
+    width: 100%;
+    height: 180px; /* Fixed height for consistent image size */
+    overflow: hidden;
+}
+
+.hospital-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image fills the space without distortion */
+    display: block;
+}
+
+.hospital-info {
+    padding: 15px 20px; /* Add padding to the text area */
+    border-left: 5px solid #28a745; /* Reintroduced the accent border here */
+}
+
+.hospital-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #007bff;
+    font-size: 1.3em;
+}
+
+.hospital-info p {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.hospital-info .description {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    font-style: italic;
+    font-size: 0.85em;
+}
+
+
+/* Footer */
+.footer {
+    background-color: #343a40; /* Darker footer */
+    color: #f8f9fa;
+    padding: 20px 0;
+    font-size: 0.9em;
+}
+
+.footer-container { 
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 0 20px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; 
+}
+
+.footer-container p { 
+    margin: 5px 0;
+}
+
+.footer-container ul { 
+    list-style: none;
+    display: flex;
+    margin: 5px 0;
+}
+
+.footer-container ul li { 
+    margin-left: 20px;
+}
+
+.footer-container ul li a { 
+    text-decoration: none;
+    color: #adb5bd;
+    transition: color 0.3s ease;
+}
+
+.footer-container ul li a:hover {
+    color: #fff;
+}
+
+
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .user-actions {
+        flex-wrap: wrap;
+    }
+    
+    .hospital-search-form {
+        flex-direction: column;
+    }
+
+    .search-select {
+        width: 100%;
+    }
+}

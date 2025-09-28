@@ -1,0 +1,289 @@
+/* Basic Reset & Body Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #e0f2f7, #c8e6c9); /* Soft gradient background */
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.5em;
+    color: #25aaa4; /* Primary brand color for text */
+}
+
+.nav-logo img {
+    height: 40px; /* Adjust logo size */
+    margin-right: 10px;
+}
+
+.navbar nav ul {
+    list-style: none;
+    display: flex;
+}
+
+.navbar nav ul li {
+    margin-left: 30px;
+}
+
+.nav-options ul li a {
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-options ul li a:hover {
+    color: #007bff; /* Primary brand color on hover */
+}
+
+/* Main Registration Section */
+
+.registration-page{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    margin: 50px;
+}
+.registration-container{
+    width: 1000px;
+    background-color: white;
+    display: flex;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+
+.form-img{
+    width: auto;
+    margin-top: 150px;
+    margin-left: 35px;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form-img img{
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+} 
+
+.registration-form-panel{
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+}
+.registration-form-panel h2 {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+}
+
+
+.input-group{
+    margin-bottom: 20px;
+}
+.input-group label{
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+}
+.input-group input[type="text"],
+.input-group input[type="email"],
+.input-group input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    color: #333;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.input-group input:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.checkbox-group input[type="checkbox"] {
+    margin-right: 10px;
+    accent-color: #007bff;
+}
+.checkbox-group a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+.checkbox-group a:hover {
+    text-decoration: underline;
+}
+#message {
+    text-align: center;
+    font-size: 0.95em;
+    color: red;
+}
+.btn-signup {
+    width: 100%;
+    padding: 15px;
+    background-color: #28a745; /* Green for sign-up */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-bottom: 20px;
+}
+.btn-signup:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+.social-signup {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.social-signup p {
+    margin-bottom: 15px;
+    color: #666;
+}
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+.social-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #f0f2f5;
+    color: #555;
+    font-size: 1.3em;
+    text-decoration: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+.social-btn.google {
+    color: #db4437; 
+}
+.social-btn.apple {
+    color: #000; 
+}
+.social-btn.facebook {
+    color: #3b5998; 
+}
+.social-btn:hover {
+    background-color: #e0e2e5;
+    color: #007bff;
+}
+.login-link {
+    text-align: center;
+    font-size: 0.95em;
+    color: #666;
+}
+.login-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 500;
+}
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+
+/* Footer */
+.footer {
+    background-color: #343a40; /* Darker footer */
+    color: #f8f9fa;
+    padding: 20px 0;
+    font-size: 0.9em;
+}
+
+.footer-container { 
+    max-width: 1200px; 
+    margin: 0 auto;
+    padding: 0 20px; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; 
+}
+
+.footer-container p { 
+    margin: 5px 0;
+}
+
+.footer-container ul { 
+    list-style: none;
+    display: flex;
+    margin: 5px 0;
+}
+
+.footer-container ul li { 
+    margin-left: 20px;
+}
+
+.footer-container ul li a { 
+    text-decoration: none;
+    color: #adb5bd;
+    transition: color 0.3s ease;
+}
+
+.footer-container ul li a:hover {
+    color: #fff;
+}
+
+/* Add this to the end of registration.css */
+
+#message.success {
+    color: green;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
+#message.error {
+    color: red;
+    font-weight: bold;
+    padding-bottom: 10px;
+}
