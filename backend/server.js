@@ -18,7 +18,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/hospitals', hospitalRoutes);
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5500;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
