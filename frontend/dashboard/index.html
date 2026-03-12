@@ -26,14 +26,19 @@
         </div>
     </header>
 
-    <main id="slider-main">
-        <img src="https://picsum.photos/id/236/1000/500" class="slide" alt="">
-        <img src="image1.png" class="slide" alt="">
-        <img src="https://picsum.photos/id/240/1000/500" class="slide" alt="">
-        <img src="https://picsum.photos/id/238/1000/500" class="slide" alt="">
-        <img src="https://picsum.photos/id/236/1000/500" class="slide clone" alt="">
-        <img src="image1.png" class="slide clone" alt="">
-    </main>
+    <div class="slider-wrapper">
+        <main id="slider-main">
+            <img src="https://picsum.photos/id/236/1000/500" class="slide" alt="">
+            <img src="image1.png" class="slide" alt="">
+            <img src="https://picsum.photos/id/240/1000/500" class="slide" alt="">
+            <img src="https://picsum.photos/id/238/1000/500" class="slide" alt="">
+            <img src="https://picsum.photos/id/236/1000/500" class="slide clone" alt="">
+            <img src="image1.png" class="slide clone" alt="">
+        </main>
+        <button class="slider-btn prev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-btn next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+        <div class="slider-dots" id="slider-dots"></div>
+    </div>
 
     <!-- dashboard section -->
     <section id="dashboard-section" class="page-section">
@@ -82,7 +87,7 @@
             </div>
 
             <!-- Newly added booking history section (hidden by default) -->
-            <section id="history-section" class="page-section" style="display: none;">
+            <section id="history-section" class="page-section">
                 <div class="container">
                     <h2 class="results-title">Booking History</h2>
                     <div id="history-list" class="hospital-list-grid"></div>

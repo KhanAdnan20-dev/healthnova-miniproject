@@ -219,9 +219,19 @@ main:active {
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     overflow: hidden; 
-    transition: transform 0.2s ease;
-    /* display: none; */
-    /* visibility: hidden; */
+    transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, translate 0.5s ease;
+    opacity: 0;
+    translate: 0 30px;
+}
+
+.hospital-card.visible {
+    opacity: 1;
+    translate: 0 0;
+}
+
+.hospital-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
 }
 
 /* ------------------ New Image & Info Styles ------------------ */
@@ -309,6 +319,143 @@ main:active {
 }
 
 
+
+/* --- Loading Spinner --- */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-dash:disabled,
+.btn-book:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* --- Search Loading Overlay --- */
+.search-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-style: italic;
+}
+
+.search-loading .loading-spinner {
+    border-color: rgba(0, 123, 255, 0.2);
+    border-top-color: #007bff;
+    width: 36px;
+    height: 36px;
+    display: block;
+    margin: 0 auto 12px;
+}
+
+/* --- Animated Toast --- */
+.booking-toast {
+    position: fixed;
+    right: 1rem;
+    bottom: 1rem;
+    background: #222;
+    color: #fff;
+    padding: 14px 22px;
+    border-radius: 8px;
+    z-index: 9999;
+    animation: toastIn 0.4s ease, toastOut 0.4s ease 2.1s forwards;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    font-weight: 500;
+}
+
+@keyframes toastIn {
+    from { opacity: 0; translate: 40px 0; }
+    to   { opacity: 1; translate: 0 0; }
+}
+@keyframes toastOut {
+    from { opacity: 1; translate: 0 0; }
+    to   { opacity: 0; translate: 40px 0; }
+}
+
+/* --- Slider Controls --- */
+.slider-wrapper {
+    position: relative;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    translate: 0 -50%;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    border: none;
+    font-size: 1.5rem;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    transition: background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.slider-btn.prev { left: 16px; }
+.slider-btn.next { right: 16px; }
+
+.slider-dots {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    translate: -50% 0;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.slider-dot.active {
+    background: #fff;
+    transform: scale(1.25);
+}
+
+/* --- History Section Transition --- */
+#history-section {
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.4s ease, padding 0.4s ease;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+#history-section.open {
+    max-height: 2000px;
+    opacity: 1;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
 
 /* --- Responsive Adjustments --- */
 
