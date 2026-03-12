@@ -11,10 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
       const AUTO_SLIDE_DELAY = 3000;
       let autoSlideTimer = null;
 
+      // Create dot indicators
+      const dotsContainer = document.getElementById('slider-dots');
+      if (dotsContainer) {
+        slides.forEach((_, i) => {
+          const dot = document.createElement('button');
+          dot.className = 'slider-dot' + (i === 0 ? ' active' : '');
+          dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+          dot.addEventListener('click', () => { slideIndex = i; showSlide(slideIndex); startAuto(); });
+          dotsContainer.appendChild(dot);
+        });
+      }
+
+      const updateDots = (index) => {
+        if (!dotsContainer) return;
+        const dots = dotsContainer.querySelectorAll('.slider-dot');
+        const trueIndex = ((index % slides.length) + slides.length) % slides.length;
+        dots.forEach((d, i) => d.classList.toggle('active', i === trueIndex));
+      };
+
       const showSlide = (index) => {
         slidesAll.forEach(s => s.style.display = 'none');
         const trueIndex = ((index % slides.length) + slides.length) % slides.length;
         slides[trueIndex].style.display = 'block';
+        updateDots(trueIndex);
       };
 
       const startAuto = () => {
@@ -29,6 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
       startAuto();
       sliderMain.addEventListener('mouseenter', () => clearInterval(autoSlideTimer));
       sliderMain.addEventListener('mouseleave', startAuto);
+
+      // Prev/Next button wiring
+      const prevBtn = document.querySelector('.slider-btn.prev');
+      const nextBtn = document.querySelector('.slider-btn.next');
+      if (prevBtn) prevBtn.addEventListener('click', () => { slideIndex--; showSlide(slideIndex); startAuto(); });
+      if (nextBtn) nextBtn.addEventListener('click', () => { slideIndex++; showSlide(slideIndex); startAuto(); });
     }
   }
 
@@ -116,6 +142,14 @@ if (logoutBtn) {
     `;
   };
 
+  // --- Staggered card entrance animation helper ---
+  const animateCards = (container) => {
+    const cards = container.querySelectorAll('.hospital-card');
+    cards.forEach((card, i) => {
+      setTimeout(() => card.classList.add('visible'), i * 100);
+    });
+  };
+
   // --- Renderers ---
   const renderHospitalList = (hospitals) => {
     if (!hospitalListContainer || !searchMessage) return;
@@ -129,6 +163,7 @@ if (logoutBtn) {
     searchMessage.style.display = 'none';
     hospitalListContainer.style.display = 'grid';
     hospitalListContainer.innerHTML = hospitals.map(h => createHospitalCardHTML(h, { isHistory: false })).join('');
+    animateCards(hospitalListContainer);
   };
 
   // --- Updated history renderer for backend response ---
@@ -146,13 +181,23 @@ if (logoutBtn) {
         bookingDate: item.date
       }, { isHistory: true, bookingDate: item.date });
     }).join('');
+    animateCards(historyList);
+  };
+
+  // --- Toast helper ---
+  const showToast = (message) => {
+    const toast = document.createElement('div');
+    toast.className = 'booking-toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 2500);
   };
 
   // --- Event delegation for Book buttons inside results ---
   if (hospitalListContainer) {
     hospitalListContainer.addEventListener('click', (e) => {
       const btn = e.target.closest('.btn-book');
-      if (!btn) return;
+      if (!btn || btn.disabled) return;
 
       // Get hospitalId from data attribute
       const hospitalId = btn.getAttribute('data-id');
@@ -161,6 +206,11 @@ if (logoutBtn) {
         return;
       }
       const token = localStorage.getItem('healthnova_token');
+
+      // Show loading state on button
+      const originalText = btn.textContent;
+      btn.innerHTML = '<span class="loading-spinner"></span>Booking…';
+      btn.disabled = true;
 
       // POST booking to backend
       fetch('http://localhost:5500/api/hospitals/book', {
@@ -177,7 +227,7 @@ if (logoutBtn) {
         btn.disabled = true;
 
         // Refresh history panel from backend if open
-        if (historySection && historySection.style.display !== 'none') {
+        if (historySection && historySection.classList.contains('open')) {
           const user = JSON.parse(localStorage.getItem('healthnova_user'));
           fetch(`http://localhost:5500/api/hospitals/history/${user.id}`, {
             headers: { Authorization: `Bearer ${token}` }
@@ -191,25 +241,11 @@ if (logoutBtn) {
             });
         }
 
-        // Toast
-        const toast = document.createElement('div');
-        toast.className = 'booking-toast';
-        toast.textContent = `Booked ${btn.getAttribute('data-name')}`;
-        Object.assign(toast.style, {
-          position: 'fixed',
-          right: '1rem',
-          bottom: '1rem',
-          background: '#222',
-          color: '#fff',
-          padding: '0.6rem 0.9rem',
-          borderRadius: '6px',
-          zIndex: 9999,
-          opacity: 0.95
-        });
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
+        showToast(`Booked ${btn.getAttribute('data-name')}`);
       })
       .catch(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
         alert('Booking failed. Please try again.');
       });
     });
@@ -222,6 +258,11 @@ if (logoutBtn) {
       const token = localStorage.getItem('healthnova_token');
       const user = JSON.parse(localStorage.getItem('healthnova_user'));
       if (!token || !user) return alert('Please log in again.');
+
+      // Show loading state on button
+      viewHistoryBtn.innerHTML = '<span class="loading-spinner"></span>Loading…';
+      viewHistoryBtn.disabled = true;
+
       try {
         const res = await fetch(`http://localhost:5500/api/hospitals/history/${user.id}`, {
           headers: { Authorization: `Bearer ${token}` }
@@ -232,13 +273,15 @@ if (logoutBtn) {
         console.error('Failed to fetch history', err);
         historyList.innerHTML = '<p class="message">Failed to load booking history.</p>';
       }
-      historySection.style.display = 'block';
+      viewHistoryBtn.textContent = 'View History';
+      viewHistoryBtn.disabled = false;
+      historySection.classList.add('open');
       historySection.scrollIntoView({ behavior: 'smooth' });
     });
 
     closeHistoryBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      historySection.style.display = 'none';
+      historySection.classList.remove('open');
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   } else {
@@ -247,8 +290,9 @@ if (logoutBtn) {
     if (!closeHistoryBtn) console.warn('closeHistoryBtn not found (id="close-history")');
   }
 
-  // --- Search form submit (unchanged logic, safe checks included) ---
+  // --- Search form submit (with loading state) ---
   if (searchForm) {
+    const searchBtn = searchForm.querySelector('button[type="submit"]');
     searchForm.addEventListener('submit', async (event) => {
       event.preventDefault();
 
@@ -263,6 +307,17 @@ if (logoutBtn) {
       const query = new URLSearchParams({ city, specialties, avg_cost_category }).toString();
       const API_URL = `http://localhost:5500/api/hospitals/search?${query}`;
 
+      // Show loading state
+      if (searchBtn) { searchBtn.innerHTML = '<span class="loading-spinner"></span>Searching…'; searchBtn.disabled = true; }
+      if (hospitalListContainer) {
+        hospitalListContainer.style.display = 'none';
+        hospitalListContainer.innerHTML = '';
+      }
+      if (searchMessage) {
+        searchMessage.innerHTML = '<div class="search-loading"><span class="loading-spinner"></span><br>Searching hospitals…</div>';
+        searchMessage.style.display = 'block';
+      }
+
       try {
         const res = await fetch(API_URL);
         if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
@@ -274,6 +329,8 @@ if (logoutBtn) {
           searchMessage.textContent = 'Failed to fetch hospital data. Please try again.';
           searchMessage.style.display = 'block';
         }
+      } finally {
+        if (searchBtn) { searchBtn.textContent = 'Search'; searchBtn.disabled = false; }
       }
     });
   }
