@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { width: '80%', color: '#28a745', text: 'Strong' },
         { width: '100%', color: '#155724', text: 'Very Strong' },
       ];
-      const level = levels[Math.min(score, levels.length) - 1] || levels[0];
+      const level = levels[Math.max(0, Math.min(score, levels.length) - 1)];
       strengthBar.style.width = level.width;
       strengthBar.style.background = level.color;
       strengthText.textContent = level.text;
